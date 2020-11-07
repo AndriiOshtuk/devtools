@@ -1,4 +1,5 @@
 import pathlib
+import os
 
 import pytest
 from click.testing import CliRunner
@@ -33,22 +34,30 @@ def test_createproj():
 
 
 @pytest.fixture()
-def temp_projdir(temp_dir) -> pathlib.Path:
+def temp_projdir(tmp_path) -> pathlib.Path:
     """Make a project directory, and return a Path() to it."""
-    dummy_projname = temp_dir / "dummy_projname"
+    dummy_projname = tmp_path / "dummy_projname"
     dummy_projname.mkdir()
     return dummy_projname
 
-# def test_createproj_with_default_projname(temp_projdir):
-#     """
-#     Test that createproj creates project file with module name
-#     """
-#     os.chdir(temp_projdir)
-#     with patch("src.devtools.devtools.createproj") as createproj:
-#         runner = CliRunner()
-#         result = runner.invoke(app.cli, ["createproj"])
-#         assert result.exit_code == 0
-#         assert createproj.called_once
+def test_createproj_with_default_projname(temp_projdir):
+    """
+    Test that createproj creates project file with module name
+    """
+    os.chdir(temp_projdir)
+    with patch("src.devtools.devtools.createproj") as createproj:
+        runner = CliRunner()
+        result = runner.invoke(app.cli, ["createproj"])
+        assert result.exit_code == 0
+        assert createproj.called_once
+
+        files = list(temp_projdir.iterdir())
+        assert len(files) == 1
+        assert files[0].name == 'dummy_projname.sublime-project'
+
+        expected_output = f"Created project:dummy_projname at {temp_projdir}"
+        assert expected_output in result.output
+
 
 # def test_createproj_with_custom_projname():
 #     assert False
