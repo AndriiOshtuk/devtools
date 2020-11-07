@@ -35,7 +35,8 @@ def createproj(proj_name: str) -> None:
     proj_file_path = current_dir / f'{proj_name}.sublime-project'
     proj_file = Path(proj_file_path)
     if proj_file.exists():
-        logger.error(f"Path already exists {current_dir}")
+        logger.error(f"Path already exists {proj_file_path}")
+        click.echo(f"Path already exists {proj_file_path}")
         sys.exit()
 
     SUBLIME_PROJECT_TEMPLEATE = """\
