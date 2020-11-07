@@ -39,7 +39,7 @@ def createproj(proj_name: str) -> None:
         click.echo(f"Path already exists {proj_file_path}")
         sys.exit()
 
-    SUBLIME_PROJECT_TEMPLEATE = """\
+    SUBLIME_PROJECT_TEMPLATE = """\
     {
         "folders":
         [
@@ -48,7 +48,7 @@ def createproj(proj_name: str) -> None:
             }
         ]
     }"""
-    text = textwrap.dedent(SUBLIME_PROJECT_TEMPLEATE)
+    text = textwrap.dedent(SUBLIME_PROJECT_TEMPLATE)
     proj_file.write_text(text)
 
     logger.info(f"Created project:{proj_name} at {current_dir}")
