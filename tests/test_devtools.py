@@ -14,6 +14,7 @@ def test_init():
             __import__("src.devtools.devtools")
             assert cli.called_once
 
+
 def test_help():
     """
     Test that CLI when called with help options
@@ -21,6 +22,7 @@ def test_help():
     runner = CliRunner()
     result = runner.invoke(app.cli, ["--help"])
     assert result.exit_code == 0
+
 
 def test_createproj():
     """
@@ -40,6 +42,7 @@ def temp_projdir(tmp_path) -> pathlib.Path:
     dummy_projname.mkdir()
     return dummy_projname
 
+
 def test_createproj_with_default_projname(temp_projdir):
     """
     Test that createproj creates project file with module name
@@ -53,7 +56,7 @@ def test_createproj_with_default_projname(temp_projdir):
 
         files = list(temp_projdir.iterdir())
         assert len(files) == 1
-        assert files[0].name == 'dummy_projname.sublime-project'
+        assert files[0].name == "dummy_projname.sublime-project"
 
         expected_output = f"Created project:dummy_projname at {temp_projdir}"
         assert expected_output in result.output
@@ -72,17 +75,18 @@ def test_createproj_with_custom_projname(temp_projdir):
 
         files = list(temp_projdir.iterdir())
         assert len(files) == 1
-        assert files[0].name == 'custom_name.sublime-project'
+        assert files[0].name == "custom_name.sublime-project"
 
         expected_output = f"Created project:custom_name at {temp_projdir}"
         assert expected_output in result.output
+
 
 def test_createproj_that_already_exists(temp_projdir):
     """
     Test that createproj exits with an error if project file with name already exists
     """
     os.chdir(temp_projdir)
-    existing_projfile = temp_projdir / 'dummy_projname.sublime-project'
+    existing_projfile = temp_projdir / "dummy_projname.sublime-project"
     existing_projfile.touch()
 
     with patch("src.devtools.devtools.createproj") as createproj:
@@ -93,7 +97,7 @@ def test_createproj_that_already_exists(temp_projdir):
 
         files = list(temp_projdir.iterdir())
         assert len(files) == 1
-        assert files[0].name == 'dummy_projname.sublime-project'
+        assert files[0].name == "dummy_projname.sublime-project"
 
         expected_output = f"Path already exists {existing_projfile}\n"
         assert expected_output == result.output
