@@ -25,7 +25,7 @@ def cli() -> None:
 @cli.command()
 # @click.option('proj_name', '-p', default=False, type=click.STRING)
 @click.argument('proj_name', default=False, type=click.STRING)
-def createproj(proj_name):
+def createproj(proj_name: str) -> None:
     """Create a SublimeText project files"""
     current_dir = Path.cwd()
 
