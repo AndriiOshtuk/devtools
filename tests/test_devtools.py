@@ -59,8 +59,23 @@ def test_createproj_with_default_projname(temp_projdir):
         assert expected_output in result.output
 
 
-# def test_createproj_with_custom_projname():
-#     assert False
+def test_createproj_with_custom_projname(temp_projdir):
+    """
+    Test that createproj creates project file with custom name
+    """
+    os.chdir(temp_projdir)
+    with patch("src.devtools.devtools.createproj") as createproj:
+        runner = CliRunner()
+        result = runner.invoke(app.cli, ["createproj", "custom_name"])
+        assert result.exit_code == 0
+        assert createproj.called_once
+
+        files = list(temp_projdir.iterdir())
+        assert len(files) == 1
+        assert files[0].name == 'custom_name.sublime-project'
+
+        expected_output = f"Created project:custom_name at {temp_projdir}"
+        assert expected_output in result.output
 
 
 # def test_createproj_that_already_exists():
