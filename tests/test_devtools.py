@@ -34,7 +34,7 @@ def test_createproj():
         assert result.exit_code == 0
         assert createproj.called_once
 
-
+#TODO Move fixtures to conftest.py file
 @pytest.fixture()
 def temp_projdir(tmp_path) -> pathlib.Path:
     """Make a project directory, and return a Path() to it."""
