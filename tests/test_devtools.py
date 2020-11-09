@@ -1,5 +1,6 @@
 import pathlib
 import os
+import textwrap
 
 import pytest
 from click.testing import CliRunner
@@ -101,3 +102,32 @@ def test_createproj_that_already_exists(temp_projdir):
 
         expected_output = f"Path already exists {existing_projfile}\n"
         assert expected_output == result.output
+
+
+def test_projfile_format(temp_projdir):
+    """
+    Test that createproj creates correct project file format
+    """
+    os.chdir(temp_projdir)
+    with patch("src.devtools.devtools.createproj") as createproj:
+        #TODO looks like these few lines are boilerplate, consider moving them to fixture
+        runner = CliRunner()
+        result = runner.invoke(app.cli, ["createproj"])
+        assert result.exit_code == 0
+        assert createproj.called_once
+
+        projfile = temp_projdir / "dummy_projname.sublime-project"
+        actual_format = projfile.read_text()
+
+        SUBLIME_PROJECT_TEMPLATE = """\
+        {
+            "folders":
+            [
+                {
+                    "path": "."
+                }
+            ]
+        }"""
+        expected_format = textwrap.dedent(SUBLIME_PROJECT_TEMPLATE)
+
+        assert expected_format in actual_format
