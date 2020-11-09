@@ -35,7 +35,8 @@ def test_createproj():
         assert result.exit_code == 0
         assert createproj.called_once
 
-#TODO Move fixtures to conftest.py file
+
+# TODO Move fixtures to conftest.py file
 @pytest.fixture()
 def temp_projdir(tmp_path) -> pathlib.Path:
     """Make a project directory, and return a Path() to it."""
@@ -110,7 +111,7 @@ def test_projfile_format(temp_projdir):
     """
     os.chdir(temp_projdir)
     with patch("src.devtools.devtools.createproj") as createproj:
-        #TODO looks like these few lines are boilerplate, consider moving them to fixture
+        # TODO looks like these few lines are boilerplate, consider moving them to fixture
         runner = CliRunner()
         result = runner.invoke(app.cli, ["createproj"])
         assert result.exit_code == 0
